@@ -1,4 +1,4 @@
-#来自于资源来自肥羊影音数码的 LiveRedirect 项目，仅用来学习和自用。
+# 资源来自肥羊影音数码的 LiveRedirect 项目，仅用来学习和自用。
 **肥羊影音数码综合Telegram交流群:[点击加入](https://t.me/feiyangdigital)**  
 **肥羊影音数码综合Telegram频道:[点击加入](https://t.me/feiyangofficalchannel)**  
 # 免责声明
