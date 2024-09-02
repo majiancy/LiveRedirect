@@ -64,13 +64,6 @@ func setupRouter(adurl string) *gin.Engine {
 		c.String(http.StatusOK, "请求成功！")
 	})
 
-	r.GET("/douyin", func(c *gin.Context) {
-		vrurl := c.Query("url")
-		douyinobj := &liveurls.Douyin{}
-		douyinobj.Shorturl = vrurl
-		c.Redirect(http.StatusMovedPermanently, duanyan(adurl, douyinobj.GetRealurl()))
-	})
-
 	r.GET("/huyayqk.m3u", func(c *gin.Context) {
 		yaobj := &list.HuyaYqk{}
 		res, _ := yaobj.HuYaYqk("https://live.cdn.huya.com/liveHttpUI/getLiveList?iGid=2135")
@@ -149,6 +142,7 @@ func setupRouter(adurl string) *gin.Engine {
 		case "douyin":
 			douyinobj := &liveurls.Douyin{}
 			douyinobj.Rid = rid
+			douyinobj.Stream = c.DefaultQuery("stream", "flv")
 			c.Redirect(http.StatusMovedPermanently, duanyan(adurl, douyinobj.GetDouYinUrl()))
 		case "douyu":
 			douyuobj := &liveurls.Douyu{}
@@ -158,10 +152,9 @@ func setupRouter(adurl string) *gin.Engine {
 		case "huya":
 			huyaobj := &liveurls.Huya{}
 			huyaobj.Rid = rid
-			huyaobj.Cdn = c.DefaultQuery("cdn", "hwcdn")
-			huyaobj.Media = c.DefaultQuery("media", "flv")
-			huyaobj.Type = c.DefaultQuery("type", "nodisplay")
-			if huyaobj.Type == "display" {
+			huyaobj.Cdn = c.DefaultQuery("cdn", "HW")
+			huyaobj.CdnType = c.DefaultQuery("cdntype", "nodisplay")
+			if huyaobj.CdnType == "display" {
 				c.JSON(200, huyaobj.GetLiveUrl())
 			} else {
 				c.Redirect(http.StatusMovedPermanently, duanyan(adurl, huyaobj.GetLiveUrl()))
@@ -190,7 +183,7 @@ func setupRouter(adurl string) *gin.Engine {
 
 func main() {
 	key := []byte("6354127897263145")
-	defstr, _ := base64.StdEncoding.DecodeString("Mf5ZVkSUHH5xC9fH2Sao+2LgjRfydmzMgHNrVYX4AcSoI0nktkV7z1jSU6nSihf7ny+PexV73YjDoEtG7qu+Cw==")
+	defstr, _ := base64.StdEncoding.DecodeString("NGrrC9lxtd9O7ezMt3Ux2ekGkOyBoF9ipw9yqKFuItF/MwEBuKVN7GFoMAtaISCb/ouyeQUklFlqsCqGYOZwBx54INVxoDeMgQuEWQqETsCfL497FXvdiMOgS0buq74L")
 	defurl, _ := openssl.AesECBDecrypt(defstr, key, openssl.PKCS7_PADDING)
 	r := setupRouter(string(defurl))
 	r.Run(":35455")
